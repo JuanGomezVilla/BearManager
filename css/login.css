@@ -1,0 +1,19 @@
+button {
+    float: right;
+}
+
+form {
+    background-color: white;
+    padding: 25px;
+    border-radius: 15px;
+    width: 20%;
+}
+
+html, body, .container-center {
+    height: 100%;
+}
+
+body {
+    background-color: #0d1117;
+    
+}

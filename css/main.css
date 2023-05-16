@@ -1,0 +1,272 @@
+/* Variables */
+:root {
+    --font-family: "Segoe UI";
+}
+
+/* Page body settings */
+body {
+    margin: 0 auto;
+}
+
+/* Font family */
+body, h1, h2, h3, h4, h5, h6, p, a, button, input {
+    font-family: var(--font-family);
+}
+
+/* Style titles */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 500;
+    line-height: 1.2;
+    margin-top: 0;
+}
+
+/* Dividing line */
+hr {
+    margin: 40px 0px;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
+/* Links */
+a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+/* Buttons, inputs, textareas, selects */
+button, input, textarea, select {
+    outline: none;
+    display: block;
+    padding: 0.375rem 0.75rem;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    box-sizing: border-box;
+    font: 16px "Segoe UI";
+}
+
+/* Other form elements */
+input, textarea, select {
+    width: 100%;
+}
+
+/* Buttons */
+button {
+    background-color: #007bff;
+    cursor: pointer;
+    color: #FFFFFF;
+    transition: .2s;
+}
+
+/* When a button, input or textarea is selected */
+button:focus, input:focus, textarea:focus {
+    border-color: #86b7fe;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+}
+
+/* When the mouse hovers over a button */
+button:hover {
+    background-color: #0069d9;
+}
+
+/* Textareas */
+textarea {
+    resize: none;
+}
+
+/* scrollbar width */
+body::-webkit-scrollbar {
+    width: 12px;
+}
+  
+/* Scrollbar background color */
+body::-webkit-scrollbar-track {
+    background: #FFFFFF;
+}
+
+/* Color of the moving bar inside the scrollbar */
+body::-webkit-scrollbar-thumb {
+    background-color: rgb(140, 140, 140);
+    border-radius: 20px;
+}
+
+/* Table */
+table {
+    width: 100%;
+}
+
+/* Table, row, cell, header cell */
+table, tr, td, th {
+    border-collapse: collapse;
+}
+
+/* Table header title */
+th {
+    text-align: start;
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* Table cell */
+td, th {
+    border-top: 1px solid #dee2e6;
+}
+
+/* Header cell and table cell */
+th, td {
+    padding: 0.75rem;
+}
+
+/* Table row */
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Footer */
+footer {
+    background-color: #f8f9fa;
+    padding: 0.5% 10% 0.5% 10%;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+    margin-top: 40px;
+}
+
+/* CUSTOM DESIGNS */
+
+/* Main container */
+.container {
+    width: 75%;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+
+/* Color for error messages */
+.error-color {
+    color: #dc3545;
+}
+
+/* Cabecera */
+.header {
+    margin-top: 60px;
+    background-color: #e9ecef;
+    padding: 4rem 6rem;
+}
+
+/* Headboard */
+.header h1 {
+    font-size: 3.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+    margin: 0;
+}
+
+/* Header text */
+.header .header-text {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
+
+/* Header line */
+.header .header-hr {
+    margin-bottom: 1.5rem;
+}
+
+/* Navigation bar */
+.navbar {
+    position: fixed;
+    display: flex;
+    width: 100%;
+    background-color: #212529;
+    color: #FFFFFF;
+    box-shadow: 0 0.5rem 1rem rgba(33, 37, 4, .15);
+    z-index: 999;
+    overflow: hidden;
+    top: 0;
+}
+
+/* Navigation bar item */
+.nav-item {
+    padding: 20px;
+    cursor: pointer;
+    user-select: none;
+    color: #FFFFFF !important;
+}
+
+/* Centered container */
+.container-center {
+    display: -webkit-flexbox;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Form row */
+.form-row {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+/* All elements in the row except the last */
+.form-row > :not(:last-child) {
+    margin-right: 10px;
+}
+
+/* Remove the margin bottom of the last child */
+.form-row:last-child{
+    margin-bottom: 0px;
+}
+
+/* Simple button */
+.simple-button {
+    background-color: transparent;
+    color: #343a40;
+    border: 1px solid #343a40;
+}
+
+/* Simple button on hover */
+.simple-button:hover {
+    background-color: #343a40;
+    color: #FFFFFF;
+}
+
+/* Simple button and simple input on focus */
+.simple-button:focus, .simple-input:focus {
+    border-color: #343a40;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, .5) !important;
+}
+
+/* Footer link */
+.footer-link {
+    color: rgba(33, 37, 41, 0.75);
+    cursor: pointer;
+    padding: 20px;
+    font-size: 18px;
+    user-select: none;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+/* Container of footer links */
+.footer-links {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Footer copyright */
+.footer-copyright {
+    text-align: center;
+    color: rgba(33, 37, 41, 0.75);
+}
