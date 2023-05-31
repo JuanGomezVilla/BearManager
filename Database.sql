@@ -12,7 +12,8 @@ CREATE TABLE users (
     nickname VARCHAR(150) NOT NULL, -- Nickname, not to be confused with the user value
     password CHAR(32)  NOT NULL, -- Password
     userType ENUM("administrator", "teacher", "student") NOT NULL, -- Type of user
-    language VARCHAR(50) NOT NULL -- Preferred language
+    language VARCHAR(50) NOT NULL, -- Preferred language
+    timesLogged INT -- Times the user has logged in
 ) ENGINE=InnoDB;
 
 -- Publications
@@ -41,10 +42,11 @@ CREATE PROCEDURE createUser(
     paramNickname VARCHAR(150), -- Nickname
     paramPassword CHAR(32), -- Password, in MD5
     paramUserType ENUM("administrator", "teacher", "student"), -- User type
-    paramLanguage VARCHAR(50) -- Language
+    paramLanguage VARCHAR(50), -- Language
+    paramTimesLogged INT -- Times logged
 )
 BEGIN
-    INSERT INTO users VALUES (paramUsername, paramNickname, paramPassword, paramUserType, paramLanguage);
+    INSERT INTO users VALUES (paramUsername, paramNickname, paramPassword, paramUserType, paramLanguage, paramTimesLogged);
 END $$
 
 -- Creates a post
@@ -64,42 +66,69 @@ END $$
 -- Get all users
 CREATE PROCEDURE getUsers()
 BEGIN
-    SELECT username, nickname, userType, language,
+    SELECT username, nickname, userType, language, timesLogged,
         (SELECT COUNT(*) FROM publications WHERE student = username) AS publications
     FROM users;
 END $$
 
 -- Reset autoincrement publications
-CREATE OR REPLACE PROCEDURE resetAutoincrementPublications()
+CREATE PROCEDURE resetAutoincrementPublications()
 BEGIN
     SET @num := 0;
     UPDATE publications SET id = @num := (@num + 1);
     ALTER TABLE publications AUTO_INCREMENT = 1;
 END $$
 
+-- Get statistics
+CREATE PROCEDURE getStatistics()
+BEGIN
+    SELECT COUNT(*) AS publications,
+        (SELECT COUNT(*) FROM users WHERE userType = "student") AS students,
+        (SELECT COUNT(*) FROM users)
+    FROM publications;
+END $$
+
+-- Get quantity
+CREATE PROCEDURE getQuantity()
+BEGIN
+    SELECT CONCAT(u.userType, "s") AS userType,
+        COUNT(u.username) AS quantity
+    FROM users u
+    GROUP BY u.userType;
+END $$
+
+-- Increase a users logins by 1
+CREATE OR REPLACE PROCEDURE incrementTimesLogged(paramUsername VARCHAR(150))
+BEGIN
+    UPDATE users SET timesLogged = timesLogged + 1 WHERE username = paramUsername;
+END $$
+
+-- Get publications
+CREATE PROCEDURE getPublications()
+BEGIN
+    SELECT id, student, title, accepted, SUBSTRING(content, 1, 20) AS content, image FROM publications;
+END $$
+
+-- Get accepted publications
+CREATE PROCEDURE getAcceptedPublications()
+BEGIN
+    SELECT u.nickname AS student,
+        p.title AS title,
+        p.image AS image,
+        p.content AS content
+    FROM publications p INNER JOIN users u
+    ON u.username = p.student
+    WHERE p.accepted = 1;
+END $$
+
+-- FUNCTIONS
+
+-- Function that returns if the post is accepted or not after having changed it
+CREATE FUNCTION changeStatusPost(paramIDpost INT)
+RETURNS INT
+BEGIN
+    UPDATE publications SET accepted = NOT accepted WHERE id = paramIDpost;
+    RETURN (SELECT accepted FROM publications WHERE id = paramIDpost);
+END $$
+
 DELIMITER ;
-
-
--- DEFAULT VALUES
-
--- Users
-CALL createUser("admin", "Admin", MD5("admin"), "administrator", "en");
-CALL createUser("teacher1", "Teacher 1", MD5("123"), "teacher", "en");
-CALL createUser("student1", "Student 1", MD5("123"), "student", "en");
-
--- Publications
-CALL createPublication("student1", "Title 1", 0, "image 1", "Content 1");
-CALL createPublication("student1", "Title 2", 0, "image 2", "Content 2");
-CALL createPublication("student1", "Title 3", 0, "image 3", "Content 3");
-CALL createPublication("student1", "Title 4", 1, "image 4", "Content 4");
-CALL createPublication("student1", "Title 5", 1, "image 5", "Content 5");
-
--- Settings
-INSERT INTO settings VALUES ("max_publications", "3");
-
--- RESULTS
-SELECT * FROM users; -- Users
-SELECT * FROM publications; -- Publications
-SELECT * FROM settings; -- Settings
-
--- Finish

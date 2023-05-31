@@ -1,0 +1,8 @@
+# ErrorDocument 404 default
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(prueba.*)$ prueba.php?path=$1 [NC,L,QSA]
+RewriteRule ^(statistics.*)$ statistics.php

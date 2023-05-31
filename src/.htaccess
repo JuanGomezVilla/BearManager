@@ -1,0 +1,32 @@
+# Indica a Apache la modificación
+RewriteEngine On
+
+# Oculta los archivos del Modelo Vista Controlador (MVC)
+RewriteRule ^View/ - [F]
+RewriteRule ^Controller/ - [F]
+RewriteRule ^Model - [F]
+RewriteRule ^Database/ - [F]
+RewriteRule ^Repository/ - [F]
+RewriteRule ^Utils/ - [F]
+
+# Redirección en caso de errores
+ErrorDocument 404 /Error/404.php
+ErrorDocument 403 /Error/403.php
+
+# Oculta que se listen los directorios
+Options All -Indexes
+
+# Redirecciona de archivo.php a archivo
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^/]+)/$ $1.php
+RewriteRule ^([^/]+)/([^/]+)/$ /$1/$2.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !(\.[a-zA-Z0-9]{1,5}|/)$
+RewriteRule (.*)$ /$1/ [R=301,L]
+
+# Prevent viewing of .htaccess file
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
