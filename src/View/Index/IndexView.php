@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<?php echo $finalLanguage; ?>">
     <head>
         <!-- Title and icon -->
         <title>Login - <?php echo $config["title"] ?></title>
@@ -20,20 +20,19 @@
         <!-- Centered container -->
         <div class="centered-container">
         <form method="POST">
-                <p style="margin-top:0;font-size:25px">Login</p>
-                <input class="form-row" type="text" name="username" placeholder="&#128100; User..." <?php 
+            <p style="margin-top:0;font-size:25px">Login</p>
+            <input class="form-row" type="text" name="username" autocapitalize="off" autocorrect="off" placeholder="&#128100; <?php echo $texts["user"]; ?>..." <?php
                     if(Utils::in_SESSION("error")) echo "value=\"" .$_SESSION["error"] ."\"";
                 ?> required>
-                <input class="form-row" type="password" name="password" placeholder="&#128274; Password..." required>
-                <button>Login</button>
-            <?php //If there is an error in the session, shows an error message
+            <input class="form-row" type="password" name="password" placeholder="&#128274; <?php echo $texts["password"]; ?>..." required>
+            <button>Login</button>
+        <?php //If there is an error in the session, shows an error message
                 if(Utils::in_SESSION("error")) {
                 ?>
-                <p class="error-color" style="margin-bottom: 0;margin-top:23px;">Incorrect data</p>
-        <?php } ?></form>
+                <p class="error-color" style="margin-bottom: 0;margin-top:23px;"><?php echo $texts["incorrect_data"]; ?></p>
+    <?php } ?></form>
     </body>
-</html>
-<?php
+</html><?php
 
 //Empty the possible error value and the username of the session
 session_unset();

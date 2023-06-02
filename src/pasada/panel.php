@@ -84,9 +84,7 @@ $texts = $languages[$language];
         <!-- Styles -->
         <link rel="stylesheet" href="/css/main.css">
 
-        <!-- Scripts -->
-        <script src="/js/main.js"></script>
-        <script src="/js/panel.js"></script>
+
     </head>
     <body><?php
         //Check if there is a connection to the database
@@ -161,7 +159,7 @@ $texts = $languages[$language];
         <div class="container">
             <?php if($userType == "administrator" || $userType == "teacher"){
                 //Capturar todas las entradas realizadas
-                $entradasRealizadas = $connection -> execute_query("CALL getPublications()");
+                //$entradasRealizadas = $connection -> execute_query("CALL getPublications()");
             ?>
             <script src="/js/publications.js"></script>
             <h2>1. Entradas de alumnos</h2>
@@ -230,119 +228,5 @@ $texts = $languages[$language];
                 
 
 
-            <?php } else if($userType == "student"){
-                //Capture posts made by the student
-                $postsStudent = $connection -> execute_query(
-                    "SELECT title, accepted, image, content FROM publications WHERE student = :student",
-                    array(":student" => $username)
-                );
-
-                //Maximum posts and posts remaining
-                $max_publications = (int) $settings["max_publications"];
-                $remaining_posts = $max_publications - count($postsStudent);
-            
-            ?><!-- Section 1 (Publications made) -->
-            <h2><?php
-                //Print the title of the section, and the remaining number of entries if that value is different from 0
-                echo $texts["publications_made"];
-                if($remaining_posts != 0) echo " (". strtolower($texts["remaining"]) .": $remaining_posts)";
-            ?></h2>
-            <?php
-
-                //Check if a student post exists to embed
-                if(UtilsWeb::in_POST("title") && UtilsWeb::in_POST("content")){
-                    //Get the data passed to insert
-                    $title = UtilsWeb::get_from_POST("title");
-                    $content = UtilsWeb::get_from_POST("content");
-
-                    //Insert the data into the database
-                    $connection -> execute_query(
-                        "CALL createPublication(:student, :title, 0, :image, :content)",
-                        array(":student" => $username, ":title" => $title, ":image" => "no", ":content" => $content)
-                    );
-
-                    //Redirect back to panel to avoid form resubmission
-                    UtilsWeb::redirect("/panel");
-                }
-
-                //If the number of posts is 0
-                if(count($postsStudent) == 0){
-                    //Mentions that the student has not created posts yet
-                    echo "<p>". $texts["description_no_posts"] ."...</p>";
-                } else {
-                    //Table with tabulation and titles
-                    echo "<table>\n";
-                    echo str_repeat(" ", 16) ."<tr>\n";
-                    echo str_repeat(" ", 20) ."<th>". $texts["title"] ."</th>\n";
-                    echo str_repeat(" ", 20) ."<th>". $texts["accepted"] ."</th>\n";
-                    echo str_repeat(" ", 20) ."<th>". $texts["image"] ."</th>\n";
-                    echo str_repeat(" ", 20) ."<th>". $texts["content"] ."</th>\n";
-                    echo str_repeat(" ", 16) ."</tr>\n";
-                    
-                    foreach($postsStudent as $post){
-                        echo str_repeat(" ", 16) ."<tr>\n";
-                        echo str_repeat(" ", 20) ."<td>". $post["title"] ."</td>\n";
-                        echo str_repeat(" ", 20) ."<td>". ($post["accepted"] ? $texts["yes"] : $texts["no"]) ."</td>\n";
-                        echo str_repeat(" ", 20) ."<td><a href=\"". $post["image"] ."\">Ver imagen</a></td>\n";
-                        echo str_repeat(" ", 20) ."<td>". $post["content"] ."</td>\n";
-                        echo str_repeat(" ", 16) ."</tr>\n";
-                    }
-                    echo str_repeat(" ", 12) ."</table>";
-                }
-
-            ?>
-
-            <p style="font-style:italic">*<?php echo $texts["description_accepted"]; ?></p>
-            <hr><?php if(count($postsStudent) >= $max_publications) { ?>
-            
-            <p><?php echo $texts["description_max_posts"]; ?>...</p><?php } else { ?>
-
-            <!-- Post creation form -->
-            <h2><?php echo $texts["create_a_post"]; ?></h2>
-            <form method="POST">
-                <div class="form-row">
-                    <input name="title" type="text" placeholder="<?php echo $texts["title"]; ?>..." required>
-                    <input name="image" type="text" placeholder="<?php echo $texts["image"]; ?>..." required>
-                    <input name="observations" type="text" placeholder="<?php echo $texts["observations"]; ?>...">
-                </div>
-                <div class="form-row">
-                    <textarea name="content" placeholder="<?php echo $texts["drafting"]; ?>..." style="height:200px" required></textarea>
-                </div>
-                <button><?php echo $texts["publish"]; ?></button>
-            </form><?php } ?>
-
-            <?php } ?>
+           
         </div>
-
-        <!-- Footer -->
-        <footer>
-            <div class="footer-links">
-                <p class="footer-link"><?php echo $texts["home"]; ?></p>
-                <p class="footer-link"><?php echo $texts["settings"]; ?></p>
-                <p class="footer-link">FAQ</p>
-            </div>
-            <p class="footer-copyright">&copy; <?php echo date("Y") ." ". $config["author"]; ?></p>
-        </footer>
-    <?php } else { ?>
-    
-        <style>
-
-            html, body, .container-center {
-                height: 100%;
-            }
-
-            body {
-                background-color: #0d1117;
-            }
-
-        </style>
-        <div class="container-center">
-            <p style="color:#FFFFFF;font-size:30px">Service not available</p>
-        </div>
-    <?php } ?></body>
-</html><?php
-
-//Finish the connection with the database
-$connection -> finish();
-
-?>

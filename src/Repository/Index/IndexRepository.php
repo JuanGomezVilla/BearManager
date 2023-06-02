@@ -13,10 +13,10 @@ class IndexRepository extends Repository {
      */
     public function getUserData($username, $password){
         //Get user limited to 1, to avoid data overload
-        return $this->connection->execute_query("SELECT username, nickname, userType, language, timesLogged
+        return $this->connection->execute_query("SELECT username, nickname, userType, language, timesLogged, enabled
             FROM users WHERE username = :username AND password = :password LIMIT 1",
             [":username" => $username, ":password" => $password]
-        );
+        )[0];
     }
 
     /**

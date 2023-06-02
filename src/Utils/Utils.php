@@ -62,6 +62,16 @@ class Utils {
     }
 
     /**
+     * Function to check if a url complies with the valid format
+     * @param string $url Value to check
+     * @return bool True if is valid
+     */
+    public static function is_valid_url($url){
+        //Use a filter function and a regular expression
+        return (bool) filter_var($url, FILTER_VALIDATE_URL) && preg_match("/^(https?|http):\/\/([A-Z0-9-]+\.)+[A-Z]{2,6}\/?/i", $url);
+    }
+
+    /**
      * Method that returns true if a text contains HTML tags
      * @param string $text Text content
      * @return bool True if contains HTML tags

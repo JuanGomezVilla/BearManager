@@ -24,8 +24,54 @@ class PanelRepository extends Repository {
         );
     }
 
+    public function getPublications(){
+        return $this->connection -> execute_query("CALL getPublications()");
+    }
+
+    public function createPublication($username, $title, $image, $content){
+        $this->connection->execute_query(
+            "CALL createPublication(:student, :title, 0, :image, :content);",
+            [
+                ":student" => $username,
+                ":title" => $title,
+                ":image" => $image,
+                ":content" => $content
+            ]
+        );
+    }
+
+    public function getPublicationsStudent($username){
+        return $this->connection->execute_query(
+            "SELECT title, accepted, image, content
+            FROM publications 
+            WHERE student = :student",
+            array(":student" => $username)
+        );
+    }
+
     public function incrementTimesLogged($username){
         $this->connection -> execute_query("CALL incrementTimesLogged(:username)", array(":username" => $username));
+    }
+
+    public function createHistoryLog($username, $typeRecord, $description){
+        $this->connection->execute_query(
+            "CALL createHistoryLog(:username, :typeRecord, :description);",
+            [
+                ":username" => $username,
+                ":typeRecord" => $typeRecord,
+                ":description" => $description
+            ]
+        );
+    }
+
+    public function setEnabledStatusUser($enabled, $username){
+        $this->connection->execute_query(
+            "CALL setEnabledStatusUser(:enabled, :username);",
+            [
+                ":enabled" => $enabled,
+                ":username" => $username
+            ]
+        );
     }
 }
 

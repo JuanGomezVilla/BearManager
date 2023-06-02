@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <!-- Title and icon -->
-        <title>Error - <?php echo $config["title"] ?></title>
+        <title>Error - <?php echo $config["title"]; ?></title>
         <link rel="icon" href="/assets/icon.ico">
         <meta charset="UTF-8" />
 

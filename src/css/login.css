@@ -1,11 +1,14 @@
+/* HTML content, document and container centered */
 html, body, .centered-container {
     height: 100%;
 }
 
+/* Page body */
 body {
     background-color: #0d1117;
 }
 
+/* Login form styles */
 form {
     background-color: white;
     padding: 25px;
@@ -13,6 +16,15 @@ form {
     width: 20%;
 }
 
+/* Button */
 button {
     float: right;
+}
+
+/* Responsive */
+@media only screen and (max-width: 900px) {
+    /* Login form */
+    form {
+        width: 65%;
+    }
 }

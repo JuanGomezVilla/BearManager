@@ -35,7 +35,7 @@ class SettingsRepository extends Repository {
     public function getUserData($username){
         //Executes a query, and returns the result
         return $this->connection->execute_query(
-            "SELECT username, nickname, language, userType, timesLogged
+            "SELECT username, nickname, language, userType, timesLogged, createAt, updateAt
             FROM users WHERE username = :username LIMIT 1",
             [":username" => $username]
         )[0];

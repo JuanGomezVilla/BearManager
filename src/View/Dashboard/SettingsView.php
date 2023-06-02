@@ -6,6 +6,8 @@
         <link rel="icon" href="/assets/icon.ico">
         <meta charset="UTF-8" />
 
+        <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&amp;display=fallback"> -->
+
         <!-- Settings -->
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,16 +16,24 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="/css/panel.css">
 
+        <!-- Scripts -->
+        <script src="/js/main.js"></script>
     </head>
     <body>
-
         <!-- Navigation bar -->
-        <nav class="navbar">
-            <div class="nav-item" onclick="location.href='/panel'"><?php echo $texts["home"]; ?></div>
-            <div class="nav-item"><?php echo $texts["settings"]; ?></div>
-            <div class="nav-item" onclick="location.href='/faq'">FAQ</div>
-            <div class="nav-item" onclick="location.href='/logout'"><?php echo $texts["logout"]; ?></div>
+        <nav class="navbar" id="navbar">
+            <div class="nav-header">
+                <div class="nav-item logo"></div>
+                <div class="nav-item icon" id="icon"></div>
+            </div>
+            <div class="nav-items">
+                <div class="nav-item" onclick="location.href='/panel'"><?php echo $texts["home"]; ?></div>
+                <div class="nav-item active"><?php echo $texts["settings"]; ?></div>
+                <div class="nav-item" onclick="location.href='/faq'">FAQ</div>
+                <div class="nav-item" onclick="location.href='/logout'"><?php echo $texts["logout"]; ?></div>
+            </div>
         </nav>
 
         <!-- Header title -->
@@ -33,11 +43,69 @@
         </div>
 
         <!-- Main container -->
-        <div class="container">
+        <div class="container"><?php if($data["userType"] == "administrator"){ ?>
+
+            <!-- Admin settings -->
+            <h2>Cambiar contraseña de un usuario</h2>
+            <form method="POST">
+                <div class="form-row">
+                    <input type="text" name="adminChangePasswordUsername" placeholder="Usuario...">
+                    <input type="password" name="adminChangePasswordPassword" placeholder="Contraseña nueva...">
+                    <button class="simple-button">Guardar</button>
+                </div>
+            </form>
+            <hr><?php } ?>
+
+            <!-- Información de usuario --> 
+            <h2>Información general</h2>
+            <?php var_export($data["createAt"]); ?>
             
+            <div class="container">
+                hola
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Nombre de usuario</label>
+                        <input readonly>
+                    </div>
+                    
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Nombre de usuario</label>
+                        <input readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label>Rol</label>
+                        <input type="text" readonly="readonly" value="<?php echo $data["userType"]; ?>">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Fecha de creación</label>
+                        <input type="text" readonly="readonly" value="<?php echo $data["createAt"]; ?>">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label>Fecha de modificación:</label>
+                        <input type="text" readonly="readonly" value="<?php echo $data["updateAt"]; ?>">
+                    </div>
+                </div>
+            </div>
+
+
+            <hr>
+
             <!-- Change language -->
             <h2><?php echo $texts["change_language"] ?></h2>
-            <form method="POST" style="display:inline-flex">
+            <form method="POST" class="form-change-language">
                 <div class="form-row">
                     <select name="language">
                         <?php

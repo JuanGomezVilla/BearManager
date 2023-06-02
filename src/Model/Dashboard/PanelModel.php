@@ -38,16 +38,51 @@ class PanelModel {
                 Utils::redirect("/panel");
             }
 
+            $entradasRealizadas = $postsStudent = null;
+            if($userType == "administrator" || $userType == "teacher"){
+                $entradasRealizadas = $repository->getPublications();
+            }
+
+            if($userType == "student"){
+                $postsStudent = $repository -> getPublicationsStudent($username);
+
+                //Check if a student post exists to embed
+                if(Utils::in_POST("title") && Utils::in_POST("content") && Utils::in_POST("image") && Utils::in_POST("observations")){
+                    //Get the data passed to insert
+                    $title          = Utils::get_from_POST("title");
+                    $content        = Utils::get_from_POST("content");
+                    $image          = Utils::get_from_POST("image");
+                    $observations   = Utils::get_from_POST("observations");
+
+                    //Comprobación de ataque XSS
+                    if(Utils::is_html($title) || Utils::is_html($content) || Utils::is_html($observations)){
+                        $repository -> createHistoryLog($username, "critical", "Intento de ataque XSS, usuario bloqueado");
+                        $repository -> setEnabledStatusUser(0, $username);
+                        Utils::redirect("/logout");
+                    } else if(Utils::is_valid_url($image)){
+                        //Insert the data into the database
+                        $repository -> createPublication($username, $title, $image, $content);
+                    }
+
+                    //Redirect back to panel to avoid form resubmission
+                    Utils::redirect("/panel");
+                                       
+                }
+            }
+
 
 
             $users = $repository->getUsers();
             return ["code" => 200, "data" => [
+                "settings" => $settings,
                 "users" => $users,
                 "userType" => $userType,
                 "username" => $username,
                 "nickname" => $nickname,
                 "language" => $language,
-                "timesLogged" => $timesLogged
+                "timesLogged" => $timesLogged,
+                "entradasRealizadas" => $entradasRealizadas,
+                "postsStudent" => $postsStudent
             ]];
         } catch(Error $error){
             return ["code" => 500, "data" => null];

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+
+            body {
+                font-family: "Lato", sans-serif;
+            }
+
+            .navbar {
+                height: 0px;
+                width: 100%;
+                position: fixed;
+                z-index: 1;
+                top: 0;
+                left: 0;
+                background-color: #212529;
+                overflow: hidden;
+                transition: 0.5s;
+                padding-top: 60px;
+            }
+
+            .navbar a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 25px;
+                color: #818181;
+                display: block;
+                transition: 0.3s;
+            }
+
+            .navbar a:hover {
+                color: #f1f1f1;
+            }
+
+            .navbar .closebtn {
+                position: absolute;
+                top: 0;
+                right: 25px;
+                font-size: 36px;
+                margin-left: 50px;
+            }
+
+            .logo {
+                background-image: url(/assets/icon.ico);
+                background-size: 40px;
+                background-position: center;
+                background-repeat: no-repeat;
+                padding: 30px;
+            }
+
+            .icon {
+                display: none;
+                background-image: url(/assets/bars.ico);
+                background-size: 26px;
+                background-repeat: no-repeat;
+                background-position: center;
+                padding: 30px;
+            }
+
+            .show {
+                height: 100%;
+            }
+
+            @media screen and (max-height: 450px) {
+                .navbar {padding-top: 15px;}
+                .navbar a {font-size: 18px;}
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar">
+            <a href="javascript:void(0)" class="closebtn icon"></a>
+            <div class="nav-items">
+                <a href="#">About</a>
+                <a href="#">Services</a>
+                <a href="#">Clients</a>
+                <a href="#">Contact</a>
+            </div>
+        </nav>
+        <script>
+
+            //Gets the navigation bar and creates a click listener
+            let navbar = document.querySelector(".navbar");
+            navbar.addEventListener("click", () => {
+                //Toggle the state of the class when clicked
+                if(navbar.className === "navbar") navbar.className += " show";
+                else navbar.className = "navbar";
+            });
+        
+        </script>
+        <h2>Animated Sidenav Example</h2>
+        <p>Click on the element below to open the side navigation menu.</p>
+        <p>Click on the element below to open the side navigation menu.</p>
+        <p>Click on the element below to open the side navigation menu.</p>
+        <p>Click on the element below to open the side navigation menu.</p>
+        <p>Click on the element below to open the side navigation menu.</p>
+        <p>Click on the element below to open the side navigation menu.</p>
+        <p>Click on the element below to open the side navigation menu.</p>
+        <p>Click on the element below to open the side navigation menu.</p>
+        <p>Click on the element below to open the side navigation menu.</p>
+        <p>Click on the element below to open the side navigation menu.</p>
+        <p>Click on the element below to open the side navigation menu.</p>
+        <p>Click on the element below to open the side navigation menu.</p>
+        <p>Click on the element below to open the side navigation menu.</p>
+        <p>Click on the element below to open the side navigation menu.</p>
+        <p>Click on the element below to open the side navigation menu.</p>
+        <p>Click on the element below to open the side navigation menu.</p>
+        <p>Click on the element below to open the side navigation menu.</p>
+    </body>
+</html>

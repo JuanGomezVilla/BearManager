@@ -1,0 +1,10 @@
+.form-change-language {
+    display: inline-flex;
+}
+
+@media only screen and (max-width: 900px) {
+    .form-change-language {
+        display: flex;
+        width: 100%;
+    }
+}

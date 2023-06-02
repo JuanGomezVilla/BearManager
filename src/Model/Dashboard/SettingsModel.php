@@ -53,10 +53,28 @@ class SettingsModel {
                 //Redirect back to settings panel
                 Utils::redirect("/settings");
             }
-    
+
+            if($userType == "administrator"){
+                //Actualiza la contraseña de un usuario que no sea uno mismo
+                if(Utils::in_POST("adminChangePasswordUsername") && Utils::in_POST("adminChangePasswordPassword")){
+                    $usernameCheck = Utils::get_from_POST("adminChangePasswordUsername");
+                    $newPassword = md5(Utils::get_from_POST("adminChangePasswordPassword"));
+
+                    if($usernameCheck != $username) $repository->updatePassword($newPassword, $usernameCheck);
+                    
+                    //Redirect back to settings
+                    Utils::redirect("/settings");
+                }
+            }
+            
+            function return_date_with_format($date, $format){
+                return date_format(date_create($date), $format);
+            }
 
 
             return ["code" => 200, "data" => [
+                "createAt" => return_date_with_format($dataUser["createAt"], "Y/m/d H:i:s"),
+                "updateAt" => return_date_with_format($dataUser["updateAt"], "Y/m/d H:i:s"),
                 "userType" => $userType,
                 "username" => $username,
                 "nickname" => $nickname,

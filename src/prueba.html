@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Responsive menu</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+
+            body {
+                margin: 0;
+                font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+            }
+
+            .navbar {
+                position: fixed;
+                overflow: hidden;
+                background-color: #212529;
+                width: 100%;
+                box-shadow: 0 0.5rem 1rem rgba(33, 37, 4, .15);
+                color: #FFFFFF;
+                top: 0;
+                z-index: 999;
+                position: fixed;
+            }
+
+            .nav-item {
+                cursor: pointer;
+                user-select: none;
+                color: #FFFFFF !important;
+                float: left;
+                display: block;
+                text-align: center;
+                padding: 20px;
+                text-decoration: none;
+                font-size: 17px;
+            }
+
+            .nav-item:hover {
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+
+            .nav-item.active {
+                background-color: rgba(0, 0, 0, 1);
+            }
+
+            .navbar .icon {
+                display: none;
+                background-image: url(/assets/bars.ico);
+                background-size: 26px;
+                background-repeat: no-repeat;
+                background-position: center;
+                padding: 30px;
+            }
+
+            .logo {
+                background-image: url(/assets/icon.ico);
+                background-size: 40px;
+                background-position: center;
+                background-repeat: no-repeat;
+                padding: 30px;
+            }
+
+            .logo:hover {
+                background-color: transparent;
+            }
+
+            @media screen and (max-width: 600px) {
+                .nav-items .nav-item {
+                    display: none;
+                }
+                
+                .nav-item.icon {
+                    float: right;
+                    display: block;
+                }
+
+                .navbar.show .nav-item {
+                    float: none;
+                    display: block;
+    
+                }
+
+                .navbar.show .nav-items {
+                    height: 100vh;
+                }
+                
+                /* Estilos del icono cuando esta el modo responsive*/
+                .navbar.show .icon {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                }
+
+                .navbar.show .logo {
+                    background-position-x: 10px;
+                    background-color: black;
+                    
+                }
+            }
+
+            
+        
+        </style>
+    </head>
+    <body>
+        <nav class="navbar" id="navbar">
+            <div class="nav-item logo"></div>
+            <div class="nav-item icon" id="icon"></div>
+            <div class="nav-items">
+                <div class="nav-item">Home</div>
+                <div class="nav-item">Ajustes</div>
+                <div class="nav-item">FAQ</div>
+                <div class="nav-item">Logout</div>
+            </div>
+            
+        </nav>
+        <div style="padding-left:16px">
+            <h2>Responsive Topnav Example</h2>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+            <p>Resize the browser window to see how it works.</p>
+        </div>
+        <script>
+
+            //Capture the navigation bar and set a click listener
+            let navbar = document.querySelector("#navbar");
+            let icon = document.querySelector("#icon");
+            icon.addEventListener("click", () => {
+                //Toggle the state of the class when clicked
+                if(navbar.className === "navbar") navbar.className += " show";
+                else navbar.className = "navbar";
+            });
+
+        </script>
+    </body>
+</html>

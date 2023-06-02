@@ -1,0 +1,9 @@
+.faq-question {
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.faq-question p, .faq-question h2 {
+    margin-top: 0;
+    margin-bottom: 0;
+}

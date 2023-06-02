@@ -13,7 +13,10 @@ CREATE TABLE users (
     password CHAR(32)  NOT NULL, -- Password
     userType ENUM("administrator", "teacher", "student") NOT NULL, -- Type of user
     language VARCHAR(50) NOT NULL, -- Preferred language
-    timesLogged INT -- Times the user has logged in
+    timesLogged INT NOT NULL, -- Times the user has logged in
+    enabled BOOLEAN DEFAULT 0 NOT NULL,
+    createAt DATETIME DEFAULT NOW() NOT NULL,
+    updateAt DATETIME DEFAULT NOW() NOT NULL
 ) ENGINE=InnoDB;
 
 -- Publications
@@ -27,6 +30,16 @@ CREATE TABLE publications (
     FOREIGN KEY (student) REFERENCES users(username) -- User id reference
 ) ENGINE=InnoDB;
 
+-- History
+CREATE TABLE history (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(150),
+    typeRecord ENUM("info", "warning", "critical") NOT NULL,
+    createAt DATETIME DEFAULT NOW() NOT NULL,
+    description VARCHAR(500),
+    FOREIGN KEY (username) REFERENCES users(username) -- User id reference
+) ENGINE=InnoDB;
+
 -- Settings
 CREATE TABLE settings (
     name VARCHAR(50) PRIMARY KEY, -- Setting name
@@ -37,16 +50,41 @@ CREATE TABLE settings (
 DELIMITER $$
 
 -- Creates an user
-CREATE PROCEDURE createUser(
+CREATE OR REPLACE PROCEDURE createUser(
     paramUsername VARCHAR(150), -- Username
     paramNickname VARCHAR(150), -- Nickname
     paramPassword CHAR(32), -- Password, in MD5
     paramUserType ENUM("administrator", "teacher", "student"), -- User type
     paramLanguage VARCHAR(50), -- Language
-    paramTimesLogged INT -- Times logged
+    paramTimesLogged INT, -- Times logged
+    paramEnabled BOOLEAN,
+    paramCreateAt DATETIME,
+    paramUpdateAt DATETIME
 )
 BEGIN
-    INSERT INTO users VALUES (paramUsername, paramNickname, paramPassword, paramUserType, paramLanguage, paramTimesLogged);
+    INSERT INTO users VALUES (
+        paramUsername, paramNickname, paramPassword, paramUserType, paramLanguage,
+        paramTimesLogged, paramEnabled, paramCreateAt, paramUpdateAt);
+END $$
+
+-- Set the enabled status of a user
+CREATE OR REPLACE PROCEDURE setEnabledStatusUser(
+    paramEnabled BOOLEAN,
+    paramUsername VARCHAR(150)
+)
+BEGIN
+    UPDATE users SET enabled = paramEnabled WHERE username = paramUsername;
+END $$
+
+-- Crea un registro de historia
+CREATE or replace PROCEDURE createHistoryLog(
+    paramUsername VARCHAR(150),
+    paramTypeRecord ENUM("info", "warning", "critical"),
+    paramDescription VARCHAR(500)
+)
+BEGIN
+    INSERT INTO history (username, typeRecord, createAt, description) VALUES
+        (paramUsername, paramTypeRecord, NOW(), paramDescription);
 END $$
 
 -- Creates a post
@@ -98,7 +136,7 @@ BEGIN
 END $$
 
 -- Increase a users logins by 1
-CREATE OR REPLACE PROCEDURE incrementTimesLogged(paramUsername VARCHAR(150))
+CREATE PROCEDURE incrementTimesLogged(paramUsername VARCHAR(150))
 BEGIN
     UPDATE users SET timesLogged = timesLogged + 1 WHERE username = paramUsername;
 END $$

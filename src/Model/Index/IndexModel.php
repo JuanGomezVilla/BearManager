@@ -10,6 +10,8 @@ class IndexModel {
             if(!$repository->isDatabaseConnection()) throw new Error("There is no connection with the database", 500);
 
             if(Utils::in_POST("username") && Utils::in_POST("password")){
+                //Verificaciones de seguridad
+
                 $username = strtolower(Utils::get_from_POST("username")); 
                 $passwordVerify = Utils::get_from_POST("password");
                 $password = $passwordVerify != null && $passwordVerify != "" && !Utils::is_html($passwordVerify) /*&& !UtilsWeb::contains_spaces($passwordVerify)*/ ? md5($passwordVerify) : null;
@@ -17,12 +19,12 @@ class IndexModel {
                     $user = $repository->getUserData($username, $password);
 
                     //If data exists, it is because the user exists
-                    if($user){
+                    if($user && $user["enabled"]){
                         //Sets the value of the username, the nickname and the user type
-                        $_SESSION["username"] = $user[0]["username"];
+                        $_SESSION["username"] = $user["username"];
 
                         //Increase times logged
-                        if($user[0]["timesLogged"] != 0) $repository -> incrementTimesLogged($username);
+                        if($user["timesLogged"] != 0) $repository->incrementTimesLogged($username);
 
                         //Redirect to control panel
                         Utils::redirect("/panel");
